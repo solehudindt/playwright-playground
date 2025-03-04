@@ -12,6 +12,8 @@ class LoginPage:
         self.page = page
         self.username_input = page.get_by_label("Username:")
         self.password_input = page.get_by_label("Password:")
+        # self.username_input = page.locator("#id_username")
+        # self.password_input = page.locator("#id_password")
         self.login_button = page.locator("input[type='submit']")
 
     def login(self, username, password):
@@ -21,15 +23,15 @@ class LoginPage:
         self.login_button.click()
 
 class DashboardPage:
-    def __init__(self, page):
+    def __init__(self, page: Page):
         self.page = page
-        self.profile_name = "#user-profile"
-        self.logout_button = "#logout"
+        self.greeting = page.locator("#user-tools")
+        self.logout_button = page.get_by_role("link", name="Log Out")
 
     def verify_dashboard_loaded(self):
-        expect(self.page.locator(self.profile_name)).to_be_visible()
+        expect(self.greeting).to_contain_text("Welcome")
 
     def logout(self):
-        self.page.click(self.logout_button)
-        expect(self.page.locator("#login")).to_be_visible()  # Ensure redirection
+        self.logout_button.click()
+        expect(self.page.get_by_text("Logged out")).to_be_visible()
 

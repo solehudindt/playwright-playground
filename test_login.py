@@ -26,22 +26,18 @@ def test_valid_login(page):
     login_page = LoginPage(page)
     login_page.login(uname, passwd)  # Use valid test credentials
 
-    # dashboard = DashboardPage(page)
-    # dashboard.verify_dashboard_loaded()
-    assert page.get_by_text("solehudindt").is_visible()
-    assert page.url == "https://solehudindt.pythonanywhere.com/dev/"
-#         dashboard.logout()
+    dashboard = DashboardPage(page)
+    dashboard.verify_dashboard_loaded()
+    dashboard.logout()
+    # assert page.get_by_text("WELCOME").is_visible()
+    # assert page.url == "https://solehudindt.pythonanywhere.com/"
 
-#         browser.close()
+def test_invalid_login(page):
 
-# def test_invalid_login():
-#     with sync_playwright() as p:
-#         browser = p.chromium.launch(headless=False)
-#         page = browser.new_page()
-
-#         login_page = LoginPage(page)
-#         login_page.login("testuser", "wrongpassword")
-
-#         expect(page.locator("#error-message")).to_be_visible()  # Adjust selector
-
-        # browser.close()
+    # page = browser.new_page()
+    
+    login_page = LoginPage(page)
+    login_page.login("testuser", "wrongpassword")
+    
+    expect(page.locator(".errornote")).to_contain_text("correct username")
+    page.screenshot(path="galat.png")
